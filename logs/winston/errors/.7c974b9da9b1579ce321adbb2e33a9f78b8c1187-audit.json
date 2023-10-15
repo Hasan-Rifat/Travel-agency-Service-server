@@ -1,0 +1,40 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/mnt/2ED6AF4CD6AF12DF/0_Job/all prectiess/jonkar vai/New/assignment/next lvl 2.0/Assignment 8/logs/winston/errors/.7c974b9da9b1579ce321adbb2e33a9f78b8c1187-audit.json",
+    "files": [
+        {
+            "date": 1694534011918,
+            "name": "/mnt/2ED6AF4CD6AF12DF/0_Job/all prectiess/jonkar vai/New/assignment/next lvl 2.0/Assignment 8/logs/winston/errors/phu-2023-12-09-21-error.log",
+            "hash": "64b229576915fa5e5888b481f2c851515f5cb38420ec770e399e1039f3e18222"
+        },
+        {
+            "date": 1694534404943,
+            "name": "/mnt/2ED6AF4CD6AF12DF/0_Job/all prectiess/jonkar vai/New/assignment/next lvl 2.0/Assignment 8/logs/winston/errors/phu-2023-12-09-22-error.log",
+            "hash": "7aa663f257bcbf7c64acf63cbb6edc608321b8e055865fb8ec2742b451640a0d"
+        },
+        {
+            "date": 1695581780406,
+            "name": "/mnt/2ED6AF4CD6AF12DF/0_Job/all prectiess/jonkar vai/New/assignment/next lvl 2.0/Assignment 8/logs/winston/errors/phu-2023-25-09-00-error.log",
+            "hash": "bad7658974caa3aff3ddc924f350090279702cb2728058358f9f5f26480e22bc"
+        },
+        {
+            "date": 1695582015723,
+            "name": "/mnt/2ED6AF4CD6AF12DF/0_Job/all prectiess/jonkar vai/New/assignment/next lvl 2.0/Assignment 8/logs/winston/errors/phu-2023-25-09-01-error.log",
+            "hash": "3ac405feded26a4bcb05a7ab9720905d9173abefa6152a523b0edb03589588db"
+        },
+        {
+            "date": 1695731781345,
+            "name": "/mnt/2ED6AF4CD6AF12DF/0_Job/all prectiess/jonkar vai/New/assignment/next lvl 2.0/Assignment 8/logs/winston/errors/phu-2023-26-09-18-error.log",
+            "hash": "230b331e51f0e7be9ef87f5b927f334cb22a177437201ffd30bffbe606b6fabe"
+        },
+        {
+            "date": 1695733321826,
+            "name": "/mnt/2ED6AF4CD6AF12DF/0_Job/all prectiess/jonkar vai/New/assignment/next lvl 2.0/Assignment 8/logs/winston/errors/phu-2023-26-09-19-error.log",
+            "hash": "f4538fdf7fd558469f54e48889bebf021a4f60af640ff004f2d197dc85e1294c"
+        }
+    ],
+    "hashType": "sha256"
+}

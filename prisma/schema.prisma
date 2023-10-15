@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User Management
+model User {
+  id           String         @id @default(uuid())
+  email        String         @unique
+  password     String
+  name         String
+  role         Role           @default(user)
+  bookings     Booking[]
+  blogPost     BlogPost[]
+  review       Review[]
+  notification Notification[]
+}
+
+// Service Management
+model Service {
+  id           String    @id @default(uuid())
+  name         String
+  description  String
+  price        Float
+  availability Boolean
+  destination  String
+  duration     String
+  bookings     Booking[]
+  review       Review[]
+}
+
+// review rating system
+model Review {
+  id        String  @id @default(uuid())
+  rating    Int
+  comment   String
+  serviceId String
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  service   Service @relation(fields: [serviceId], references: [id])
+
+  @@unique([userId, serviceId])
+}
+
+// notification system
+model Notification {
+  id      String  @id @default(uuid())
+  userId  String
+  message String
+  role    Role
+  read    Boolean @default(false)
+  user    User    @relation(fields: [userId], references: [id])
+}
+
+// Booking Management
+model Booking {
+  id              String   @id @default(uuid())
+  userId          String
+  serviceId       String
+  status          Status
+  date            DateTime
+  travelers       Int // Number of travelers
+  specialRequests String // Any special requests
+  user            User     @relation(fields: [userId], references: [id])
+  service         Service  @relation(fields: [serviceId], references: [id])
+
+  @@unique([userId, serviceId])
+}
+
+// Content Management
+model BlogPost {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String
+  published Boolean
+  author    String // Author's name
+  userId    String // Author's user ID
+  user      User    @relation(fields: [userId], references: [id])
+  // ...
+
+  // Add more fields and relationships as needed
+
+  @@unique([userId, title])
+}
+
+model FAQ {
+  id       Int    @id @default(autoincrement())
+  question String
+  answer   String
+  category String // FAQ category
+  // ...
+
+  // Add more fields and relationships as needed
+}
+
+enum Role {
+  user
+  admin
+  SuperAdmin
+}
+
+enum Status {
+  pending
+  shipped
+  delivered
+}

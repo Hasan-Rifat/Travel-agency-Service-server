@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/mnt/2ED6AF4CD6AF12DF/0_Job/all prectiess/jonkar vai/New/assignment/next lvl 2.0/Travel agency Service/server/logs/winston/errors/.2391a9e4d8851c05b360404100da2dc15eff92f9-audit.json",
+    "files": [
+        {
+            "date": 1697351423151,
+            "name": "/mnt/2ED6AF4CD6AF12DF/0_Job/all prectiess/jonkar vai/New/assignment/next lvl 2.0/Travel agency Service/server/logs/winston/errors/phu-2023-15-10-12-error.log",
+            "hash": "93ae6fe43a173c1c0a762f2003f09990795d1b70e6618fc6038f135ac2d6a5d6"
+        }
+    ],
+    "hashType": "sha256"
+}

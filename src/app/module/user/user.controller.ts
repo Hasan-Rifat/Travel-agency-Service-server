@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { userServices } from './user.services';
+import cloudinary from '../../../shared/cloudinary';
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
   const result = await userServices.getAllFromDB();
@@ -27,6 +28,16 @@ const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateIntoDB = catchAsync(async (req: Request, res: Response) => {
+  if (req.body.url) {
+    // delete old image
+    await cloudinary.uploader.destroy(req.body.public_id);
+
+    const uploadResult = await cloudinary.uploader.upload(req.body.url, {
+      folder: '/avatar',
+    });
+    req.body.url = uploadResult.secure_url;
+    req.body.public_id = uploadResult.public_id;
+  }
   const result = await userServices.updateIntoDB(req.params.id, req.body);
 
   sendResponse(res, {
@@ -49,6 +60,7 @@ const deleteFromDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getProfile = catchAsync(async (req: Request, res: Response) => {
+  console.log('req.user', req.user);
   const userId = req.user?.userId;
   const result = await userServices.getProfile(userId);
 

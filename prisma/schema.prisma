@@ -11,42 +11,67 @@ datasource db {
 }
 
 // User Management
+
 model User {
   id           String         @id @default(uuid())
   email        String         @unique
   password     String
   name         String
   role         Role           @default(user)
+  public_id    String
+  url          String
   bookings     Booking[]
   blogPost     BlogPost[]
   review       Review[]
   notification Notification[]
+  reviewReply  ReviewReply[]
 }
 
 // Service Management
+
 model Service {
   id           String    @id @default(uuid())
   name         String
-  description  String
+  location     String
+  categoryId   String
+  category     Category  @relation(fields: [categoryId], references: [id])
   price        Float
-  availability Boolean
-  destination  String
-  duration     String
+  description  String?
+  availability Boolean?
+  url          String?
+  public_id    String
+  reviews      Review[]
   bookings     Booking[]
-  review       Review[]
+}
+
+model Category {
+  id      String    @id @default(uuid())
+  name    String
+  service Service[]
 }
 
 // review rating system
 model Review {
-  id        String  @id @default(uuid())
-  rating    Int
-  comment   String
-  serviceId String
-  userId    String
-  user      User    @relation(fields: [userId], references: [id])
-  service   Service @relation(fields: [serviceId], references: [id])
+  id          String       @id @default(uuid())
+  rating      Int
+  comment     String
+  serviceId   String
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  service     Service      @relation(fields: [serviceId], references: [id])
+  ReviewReply ReviewReply?
 
   @@unique([userId, serviceId])
+}
+
+model ReviewReply {
+  id        String   @id @default(uuid())
+  comment   String
+  reviewId  String   @unique
+  userId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  review    Review   @relation(fields: [reviewId], references: [id])
 }
 
 // notification system
@@ -76,22 +101,22 @@ model Booking {
 
 // Content Management
 model BlogPost {
-  id        Int     @id @default(autoincrement())
+  id        String  @id @default(uuid())
   title     String
   content   String
   published Boolean
+  url       String
+  public_id String
   author    String // Author's name
   userId    String // Author's user ID
   user      User    @relation(fields: [userId], references: [id])
   // ...
 
   // Add more fields and relationships as needed
-
-  @@unique([userId, title])
 }
 
-model FAQ {
-  id       Int    @id @default(autoincrement())
+model Faq {
+  id       String @id @default(uuid())
   question String
   answer   String
   category String // FAQ category
@@ -107,7 +132,8 @@ enum Role {
 }
 
 enum Status {
-  pending
-  shipped
-  delivered
+  accept
+  reject
+  cancel
+  adjust
 }

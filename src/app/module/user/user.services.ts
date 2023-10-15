@@ -1,5 +1,7 @@
+import bcrypt from 'bcryptjs';
 import { User } from '@prisma/client';
 import { prisma } from '../../../shared/prisma';
+import config from '../../../config';
 
 const getAllFromDB = async (): Promise<User[]> => {
   const result = await prisma.user.findMany();
@@ -16,6 +18,10 @@ const getByIdFromDB = async (id: string): Promise<User | null> => {
 };
 
 const updateIntoDB = async (id: string, user: User): Promise<User> => {
+  user.password = bcrypt.hashSync(
+    user.password,
+    Number(config.bycrypt_salt_rounds)
+  );
   const result = await prisma.user.update({
     where: {
       id: id,

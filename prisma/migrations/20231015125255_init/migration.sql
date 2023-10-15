@@ -2,7 +2,7 @@
 CREATE TYPE "Role" AS ENUM ('user', 'admin', 'SuperAdmin');
 
 -- CreateEnum
-CREATE TYPE "Status" AS ENUM ('pending', 'shipped', 'delivered');
+CREATE TYPE "Status" AS ENUM ('accept', 'reject', 'adjust');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -11,6 +11,8 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'user',
+    "public_id" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -26,6 +28,28 @@ CREATE TABLE "Service" (
     "duration" TEXT NOT NULL,
 
     CONSTRAINT "Service_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Review" (
+    "id" TEXT NOT NULL,
+    "rating" INTEGER NOT NULL,
+    "comment" TEXT NOT NULL,
+    "serviceId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "Review_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Notification" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "message" TEXT NOT NULL,
+    "role" "Role" NOT NULL,
+    "read" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "Notification_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -67,10 +91,22 @@ CREATE TABLE "FAQ" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Review_userId_serviceId_key" ON "Review"("userId", "serviceId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Booking_userId_serviceId_key" ON "Booking"("userId", "serviceId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "BlogPost_userId_title_key" ON "BlogPost"("userId", "title");
+
+-- AddForeignKey
+ALTER TABLE "Review" ADD CONSTRAINT "Review_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Review" ADD CONSTRAINT "Review_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Service"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Notification" ADD CONSTRAINT "Notification_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Booking" ADD CONSTRAINT "Booking_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

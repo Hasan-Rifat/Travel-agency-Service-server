@@ -2,6 +2,8 @@ import express from 'express';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import auth from '../../middlewares/auth';
 import { NotificationController } from './notification.controller';
+import validateRequest from '../../middlewares/validateRequest';
+import { NotificationValidation } from './notificaiton.validation';
 
 const router = express.Router();
 
@@ -18,6 +20,7 @@ router.get(
 );
 router.patch(
   '/:id',
+  validateRequest(NotificationValidation.notificationUpdateSchema),
   auth(ENUM_USER_ROLE.ADMIN),
   NotificationController.updateIntoDB
 );

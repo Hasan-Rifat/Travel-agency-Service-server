@@ -4,9 +4,13 @@ import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import cloudinary from '../../../shared/cloudinary';
 import { ServiceServices } from './service.services';
+import pick from '../../../shared/pick';
+import { ServiceFilterableFields } from './service.constants';
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-  const result = await ServiceServices.getAllFromDB();
+  const filters = pick(req.query, ServiceFilterableFields);
+  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+  const result = await ServiceServices.getAllFromDB(filters, options);
 
   sendResponse(res, {
     success: true,

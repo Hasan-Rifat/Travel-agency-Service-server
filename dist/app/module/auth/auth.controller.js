@@ -37,22 +37,42 @@ const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 }));
 const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_services_1.AuthService.loginUser(req.body);
-    const { refreshToken, accessToken: token } = result;
+    const { refreshToken, accessToken: token, data: user } = result;
     // set refresh token into cookie
     const cookieOptions = {
         secure: config_1.default.env === 'production',
         httpOnly: true,
     };
     res.cookie('refreshToken', refreshToken, cookieOptions);
-    console.log(token);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
         message: 'User signin successfully!"',
         token,
+        user,
+    });
+}));
+const refreshAccessToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const refreshToken = req.headers.authorization;
+    if (!refreshToken) {
+        throw new Error('Refresh token not found');
+    }
+    const result = yield auth_services_1.AuthService.refreshAccessToken(refreshToken);
+    const { accessToken } = result;
+    const cookieOptions = {
+        secure: config_1.default.env === 'production',
+        httpOnly: true,
+    };
+    res.cookie('refreshToken', refreshToken, cookieOptions);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'new token create successfully',
+        token: accessToken,
     });
 }));
 exports.AuthController = {
     insertIntoDB,
     loginUser,
+    refreshAccessToken,
 };

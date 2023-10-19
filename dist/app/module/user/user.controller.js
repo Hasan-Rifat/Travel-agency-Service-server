@@ -39,7 +39,6 @@ const getByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
 const updateIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.body.url) {
         // delete old image
-        yield cloudinary_1.default.uploader.destroy(req.body.public_id);
         const uploadResult = yield cloudinary_1.default.uploader.upload(req.body.url, {
             folder: '/avatar',
         });

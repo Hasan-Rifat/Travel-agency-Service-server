@@ -8,6 +8,7 @@ const sendResponse = (res, data) => {
         meta: data.meta || null || undefined,
         data: data.data || null || undefined,
         token: data.token || null || undefined,
+        user: data.user || null || undefined,
     };
     res.status(data.statusCode).json(responseData);
 };

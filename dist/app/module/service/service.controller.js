@@ -18,8 +18,12 @@ const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const cloudinary_1 = __importDefault(require("../../../shared/cloudinary"));
 const service_services_1 = require("./service.services");
+const pick_1 = __importDefault(require("../../../shared/pick"));
+const service_constants_1 = require("./service.constants");
 const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield service_services_1.ServiceServices.getAllFromDB();
+    const filters = (0, pick_1.default)(req.query, service_constants_1.ServiceFilterableFields);
+    const options = (0, pick_1.default)(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+    const result = yield service_services_1.ServiceServices.getAllFromDB(filters, options);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,

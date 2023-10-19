@@ -1,9 +1,0 @@
-Tue Sep 26 2023 18:39:8 } [PH] error: 🐱‍🏍 globalErrorHandler ~~ 
-Invalid `prisma.user.create()` invocation in
-/mnt/2ED6AF4CD6AF12DF/0_Job/all prectiess/jonkar vai/New/assignment/next lvl 2.0/Assignment 8/src/app/module/auth/auth.services.ts:13:36
-
-  10 
-  11 const insertIntoDB = async (data: User): Promise<User> => {
-  12   data.password = bcrypt.hashSync(data.password, 12);
-→ 13   const result = await prisma.user.create(
-Unique constraint failed on the fields: (`email`)

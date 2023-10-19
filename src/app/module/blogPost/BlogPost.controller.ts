@@ -69,8 +69,6 @@ const updateIntoDB = catchAsync(async (req: Request, res: Response) => {
     req.body.public_id = uploadResult.public_id;
   }
 
-  console.log(req.body);
-
   // const result = await BlogPostServices.updateIntoDB(req.params.id, req.body);
 
   sendResponse(res, {

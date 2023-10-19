@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import { Response } from 'express';
 
 type IApiReponse<T> = {
@@ -11,6 +12,7 @@ type IApiReponse<T> = {
     total: number;
   };
   data?: T | null;
+  user?: User;
 };
 
 const sendResponse = <T>(res: Response, data: IApiReponse<T>): void => {
@@ -21,6 +23,7 @@ const sendResponse = <T>(res: Response, data: IApiReponse<T>): void => {
     meta: data.meta || null || undefined,
     data: data.data || null || undefined,
     token: data.token || null || undefined,
+    user: data.user || null || undefined,
   };
 
   res.status(data.statusCode).json(responseData);

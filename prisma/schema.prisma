@@ -148,7 +148,7 @@ model Faq {
 enum Role {
   user
   admin
-  SuperAdmin
+  superAdmin
 }
 
 enum Status {

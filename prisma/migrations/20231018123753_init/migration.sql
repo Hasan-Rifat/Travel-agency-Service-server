@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('user', 'admin', 'SuperAdmin');
+CREATE TYPE "Role" AS ENUM ('user', 'admin', 'superAdmin');
 
 -- CreateEnum
 CREATE TYPE "Status" AS ENUM ('accept', 'reject', 'cancel', 'adjust');
@@ -26,6 +26,7 @@ CREATE TABLE "Service" (
     "location" TEXT NOT NULL,
     "categoryId" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
     "description" TEXT,
     "availability" BOOLEAN,
     "url" TEXT,

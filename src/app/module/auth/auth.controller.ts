@@ -26,7 +26,7 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.loginUser(req.body);
 
-  const { refreshToken, accessToken: token } = result;
+  const { refreshToken, accessToken: token, data: user } = result;
 
   // set refresh token into cookie
 
@@ -36,7 +36,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   };
 
   res.cookie('refreshToken', refreshToken, cookieOptions);
-  console.log(token);
+
   sendResponse<{
     token: string;
   }>(res, {
@@ -44,10 +44,39 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     message: 'User signin successfully!"',
     token,
+    user,
+  });
+});
+const refreshAccessToken = catchAsync(async (req, res) => {
+  const refreshToken = req.headers.authorization;
+
+  if (!refreshToken) {
+    throw new Error('Refresh token not found');
+  }
+
+  const result = await AuthService.refreshAccessToken(refreshToken);
+
+  const { accessToken } = result;
+
+  const cookieOptions = {
+    secure: config.env === 'production',
+    httpOnly: true,
+  };
+
+  res.cookie('refreshToken', refreshToken, cookieOptions);
+
+  sendResponse<{
+    token: string;
+  }>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'new token create successfully',
+    token: accessToken,
   });
 });
 
 export const AuthController = {
   insertIntoDB,
   loginUser,
+  refreshAccessToken,
 };

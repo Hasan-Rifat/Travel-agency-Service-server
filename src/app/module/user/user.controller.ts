@@ -30,7 +30,6 @@ const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 const updateIntoDB = catchAsync(async (req: Request, res: Response) => {
   if (req.body.url) {
     // delete old image
-    await cloudinary.uploader.destroy(req.body.public_id);
 
     const uploadResult = await cloudinary.uploader.upload(req.body.url, {
       folder: '/avatar',

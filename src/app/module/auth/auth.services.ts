@@ -47,11 +47,43 @@ const loginUser = async (user: User): Promise<ILoginUserResponse> => {
     config.jwt.secret as Secret,
     config.jwt.refresh_expires_in as string
   );
+  const data = result;
 
-  return { accessToken, refreshToken };
+  return { accessToken, refreshToken, data };
+};
+const refreshAccessToken = async (
+  token: string
+): Promise<{
+  accessToken: string;
+  refreshToken: string;
+}> => {
+  const user = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
+
+  if (!user) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid token');
+  }
+
+  const accessToken = jwtHelpers.createToken(
+    { id: user.id, email: user.email, role: user.role },
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string
+  );
+
+  // create refresh token
+  const refreshToken = jwtHelpers.createToken(
+    { id: user._id, role: user.role, email: user.email },
+    config.jwt.refresh_secret as Secret,
+    config.jwt.refresh_expires_in as string
+  );
+
+  return {
+    accessToken,
+    refreshToken,
+  };
 };
 
 export const AuthService = {
   insertIntoDB,
   loginUser,
+  refreshAccessToken,
 };

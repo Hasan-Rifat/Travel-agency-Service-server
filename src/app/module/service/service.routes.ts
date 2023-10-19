@@ -7,7 +7,11 @@ import { ServiceValidation } from './service.validation';
 
 const router = express.Router();
 
-router.get('/', auth(ENUM_USER_ROLE.ADMIN), ServiceController.getAllFromDB);
+router.get(
+  '/',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
+  ServiceController.getAllFromDB
+);
 router.post(
   '/',
   validateRequest(ServiceValidation.serviceCreateSchema),

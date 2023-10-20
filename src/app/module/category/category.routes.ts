@@ -7,28 +7,32 @@ import { CategoryValidation } from './category.validation';
 
 const router = express.Router();
 
-router.get('/', auth(ENUM_USER_ROLE.ADMIN), CategoryController.getAllFromDB);
+router.get(
+  '/',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
+  CategoryController.getAllFromDB
+);
 router.post(
   '/',
   validateRequest(CategoryValidation.categoryCreateSchema),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
   CategoryController.insertIntoDB
 );
 
 router.get(
   '/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
   CategoryController.getByIdFromDB
 );
 router.patch(
   '/:id',
   validateRequest(CategoryValidation.categoryUpdateSchema),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
   CategoryController.updateIntoDB
 );
 router.delete(
   '/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
   CategoryController.deleteFromDB
 );
 

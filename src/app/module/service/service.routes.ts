@@ -15,19 +15,23 @@ router.get(
 router.post(
   '/',
   validateRequest(ServiceValidation.serviceCreateSchema),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
   ServiceController.insertIntoDB
 );
-router.get('/:id', auth(ENUM_USER_ROLE.ADMIN), ServiceController.getByIdFromDB);
+router.get(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
+  ServiceController.getByIdFromDB
+);
 router.patch(
   '/:id',
   validateRequest(ServiceValidation.serviceUpdateSchema),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
   ServiceController.updateIntoDB
 );
 router.delete(
   '/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
   ServiceController.deleteFromDB
 );
 

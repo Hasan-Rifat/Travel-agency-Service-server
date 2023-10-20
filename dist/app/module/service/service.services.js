@@ -66,7 +66,6 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
     const whereConditions = andConditions.length > 0 ? { AND: andConditions } : {};
     const result = yield prisma_1.prisma.service.findMany({
         include: {
-            bookings: true,
             category: true,
             reviews: true,
         },

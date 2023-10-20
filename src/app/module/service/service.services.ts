@@ -56,7 +56,6 @@ const getAllFromDB = async (
 
   const result = await prisma.service.findMany({
     include: {
-      bookings: true,
       category: true,
       reviews: true,
     },

@@ -7,31 +7,39 @@ import { BookingValidation } from './booking.validation';
 
 const router = express.Router();
 
-router.get('/', auth(ENUM_USER_ROLE.ADMIN), BookingController.getAllFromDB);
+router.get(
+  '/',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
+  BookingController.getAllFromDB
+);
 router.post(
   '/',
   validateRequest(BookingValidation.bookingCreateSchema),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
   BookingController.insertIntoDB
 );
 
-router.get('/:id', auth(ENUM_USER_ROLE.ADMIN), BookingController.getByIdFromDB);
+router.get(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
+  BookingController.getByIdFromDB
+);
 router.patch(
   '/:id',
   validateRequest(BookingValidation.bookingUpdateSchema),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
   BookingController.updateIntoDB
 );
 
 router.delete(
   '/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
   BookingController.deleteFromDB
 );
 router.patch(
   '/:id/cancel',
   validateRequest(BookingValidation.bookingUpdateSchema),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
   BookingController.cancelBooking
 );
 

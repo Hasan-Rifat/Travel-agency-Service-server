@@ -7,30 +7,38 @@ import { ReviewValidation } from './review.validation';
 
 const router = express.Router();
 
-router.get('/', auth(ENUM_USER_ROLE.ADMIN), ReviewController.getAllFromDB);
+router.get(
+  '/',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
+  ReviewController.getAllFromDB
+);
 router.post(
   '/',
   validateRequest(ReviewValidation.reviewCreateSchema),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
   ReviewController.insertIntoDB
 );
 
-router.get('/:id', auth(ENUM_USER_ROLE.ADMIN), ReviewController.getByIdFromDB);
+router.get(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
+  ReviewController.getByIdFromDB
+);
 router.patch(
   '/:id',
   validateRequest(ReviewValidation.reviewUpdateSchema),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
   ReviewController.updateIntoDB
 );
 router.delete(
   '/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
   ReviewController.deleteFromDB
 );
 router.post(
   '/replay/:id',
   validateRequest(ReviewValidation.reviewReplaySchema),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
   ReviewController.replayReview
 );
 

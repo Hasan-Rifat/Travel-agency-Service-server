@@ -13,13 +13,21 @@ router.get(
   UserController.getAllFromDB
 );
 
-router.get('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.getByIdFromDB);
+router.get(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
+  UserController.getByIdFromDB
+);
 router.patch(
   '/:id',
   validateRequest(UserValidation.userUpdateSchema),
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
   UserController.updateIntoDB
 );
-router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.deleteFromDB);
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
+  UserController.deleteFromDB
+);
 
 export const UserRouter = router;

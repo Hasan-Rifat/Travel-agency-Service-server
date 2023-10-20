@@ -11,7 +11,7 @@ const routes_1 = __importDefault(require("./app/routes"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000', 'https://travel-agency-client-phi.vercel.app'],
     credentials: true,
 }));
 app.use((0, cookie_parser_1.default)());

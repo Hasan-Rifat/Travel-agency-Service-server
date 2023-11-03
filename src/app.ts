@@ -10,7 +10,10 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: ['http://localhost:3000','https://travel-agency-client-phi.vercel.app'],
+    origin: [
+      'http://localhost:3000',
+      'https://travel-agency-client-phi.vercel.app',
+    ],
     credentials: true,
   })
 );

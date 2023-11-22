@@ -7,22 +7,14 @@ import { ServiceValidation } from './service.validation';
 
 const router = express.Router();
 
-router.get(
-  '/',
-
-  ServiceController.getAllFromDB
-);
+router.get('/', ServiceController.getAllFromDB);
 router.post(
   '/',
   validateRequest(ServiceValidation.serviceCreateSchema),
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
   ServiceController.insertIntoDB
 );
-router.get(
-  '/:id',
-  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin),
-  ServiceController.getByIdFromDB
-);
+router.get('/:id', ServiceController.getByIdFromDB);
 router.patch(
   '/:id',
   validateRequest(ServiceValidation.serviceUpdateSchema),

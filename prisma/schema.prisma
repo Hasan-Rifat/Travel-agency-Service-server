@@ -104,9 +104,12 @@ model Booking {
   userId          String
   serviceId       String
   status          Status
-  date            DateTime
+  start           DateTime
+  end             DateTime
+  price           String
   travelers       Int // Number of travelers
   specialRequests String // Any special requests
+  totalDays       Int
   user            User     @relation(fields: [userId], references: [id])
   service         Service  @relation(fields: [serviceId], references: [id])
   createdAt       DateTime @default(now())

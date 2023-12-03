@@ -9,6 +9,7 @@ const sendResponse = (res, data) => {
         data: data.data || null || undefined,
         token: data.token || null || undefined,
         user: data.user || null || undefined,
+        clientSecret: data.clientSecret || null || undefined,
     };
     res.status(data.statusCode).json(responseData);
 };

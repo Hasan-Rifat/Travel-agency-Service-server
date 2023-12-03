@@ -14,6 +14,7 @@ const review_routes_1 = require("../module/review/review.routes");
 const BlogPost_routes_1 = require("../module/blogPost/BlogPost.routes");
 const faq_routes_1 = require("../module/faq/faq.routes");
 const notification_routes_1 = require("../module/notification/notification.routes");
+const payment_routes_1 = require("../module/payment/payment.routes");
 const router = express_1.default.Router();
 const moduleRoutes = [
     // ...
@@ -52,6 +53,10 @@ const moduleRoutes = [
     {
         path: '/faq',
         route: faq_routes_1.FaqRouter,
+    },
+    {
+        path: '/payment',
+        route: payment_routes_1.PaymentRouter,
     },
     {
         path: '/notification',

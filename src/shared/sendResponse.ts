@@ -13,6 +13,7 @@ type IApiReponse<T> = {
   };
   data?: T | null;
   user?: User;
+  clientSecret?: string;
 };
 
 const sendResponse = <T>(res: Response, data: IApiReponse<T>): void => {
@@ -24,6 +25,7 @@ const sendResponse = <T>(res: Response, data: IApiReponse<T>): void => {
     data: data.data || null || undefined,
     token: data.token || null || undefined,
     user: data.user || null || undefined,
+    clientSecret: data.clientSecret || null || undefined,
   };
 
   res.status(data.statusCode).json(responseData);

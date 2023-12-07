@@ -19,7 +19,6 @@ const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const payment_services_1 = require("./payment.services");
 const CreatePayment = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_services_1.PaymentService.CreatePayment(req.body);
-    console.log('result', result);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,

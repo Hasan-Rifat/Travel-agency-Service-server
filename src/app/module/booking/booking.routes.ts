@@ -26,7 +26,7 @@ router.get(
 );
 router.patch(
   '/:id',
-  validateRequest(BookingValidation.bookingUpdateSchema),
+  // validateRequest(BookingValidation.bookingUpdateSchema),
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SupperAdmin, ENUM_USER_ROLE.USER),
   BookingController.updateIntoDB
 );

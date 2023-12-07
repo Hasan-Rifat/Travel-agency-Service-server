@@ -1,1 +1,1 @@
-export const status = ['accept', 'reject', 'cancel', 'adjust'];
+export const status = ['accept', 'reject', 'cancel', 'adjust', 'pending'];

@@ -7,8 +7,6 @@ import { PaymentService } from './payment.services';
 const CreatePayment = catchAsync(async (req: Request, res: Response) => {
   const result = await PaymentService.CreatePayment(req.body);
 
-  console.log('result', result);
-
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,

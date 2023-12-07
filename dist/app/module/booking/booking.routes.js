@@ -14,7 +14,9 @@ const router = express_1.default.Router();
 router.get('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SupperAdmin, user_1.ENUM_USER_ROLE.USER), booking_controller_1.BookingController.getAllFromDB);
 router.post('/', (0, validateRequest_1.default)(booking_validation_1.BookingValidation.bookingCreateSchema), (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SupperAdmin, user_1.ENUM_USER_ROLE.USER), booking_controller_1.BookingController.insertIntoDB);
 router.get('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SupperAdmin, user_1.ENUM_USER_ROLE.USER), booking_controller_1.BookingController.getByIdFromDB);
-router.patch('/:id', (0, validateRequest_1.default)(booking_validation_1.BookingValidation.bookingUpdateSchema), (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SupperAdmin, user_1.ENUM_USER_ROLE.USER), booking_controller_1.BookingController.updateIntoDB);
+router.patch('/:id', 
+// validateRequest(BookingValidation.bookingUpdateSchema),
+(0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SupperAdmin, user_1.ENUM_USER_ROLE.USER), booking_controller_1.BookingController.updateIntoDB);
 router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SupperAdmin, user_1.ENUM_USER_ROLE.USER), booking_controller_1.BookingController.deleteFromDB);
 router.patch('/:id/cancel', (0, validateRequest_1.default)(booking_validation_1.BookingValidation.bookingUpdateSchema), (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.SupperAdmin, user_1.ENUM_USER_ROLE.USER), booking_controller_1.BookingController.cancelBooking);
 exports.BookingRouter = router;

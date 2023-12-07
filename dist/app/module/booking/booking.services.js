@@ -34,16 +34,37 @@ const getByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
     return result;
 });
-const updateIntoDB = (id, booking) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.prisma.booking.update({
+const updateIntoDB = (id, data) => __awaiter(void 0, void 0, void 0, function* () {
+    // return result;
+    const user = yield prisma_1.prisma.user.findUnique({
         where: {
-            id: id,
+            id: data.userId,
         },
-        data: booking,
     });
-    if (!result) {
-        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'booking not found');
+    if (!user) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'user not found');
     }
+    const result = yield prisma_1.prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+        // create a booking
+        const booking = yield transactionClient.booking.update({
+            where: {
+                id: id,
+            },
+            data,
+        });
+        yield transactionClient.notification.create({
+            data: {
+                userId: user.id,
+                message: 'order confirmed successfully',
+                role: user.role,
+                read: false,
+            },
+        });
+        return {
+            booking,
+        };
+    }));
+    // create notification
     return result;
 });
 const cancelBooking = (id, booking) => __awaiter(void 0, void 0, void 0, function* () {
@@ -83,7 +104,7 @@ const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
         const booking = yield transactionClient.booking.create({
             data,
         });
-        const notification = yield transactionClient.notification.create({
+        yield transactionClient.notification.create({
             data: {
                 userId: user.id,
                 message: 'You have a new booking',
@@ -93,7 +114,6 @@ const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
         });
         return {
             booking,
-            notification,
         };
     }));
     // create notification

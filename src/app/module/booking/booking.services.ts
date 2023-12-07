@@ -1,4 +1,4 @@
-import { Booking, Notification } from '@prisma/client';
+import { Booking } from '@prisma/client';
 import { prisma } from '../../../shared/prisma';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
@@ -27,17 +27,48 @@ const getByIdFromDB = async (id: string): Promise<Booking | null> => {
   return result;
 };
 
-const updateIntoDB = async (id: string, booking: Booking): Promise<Booking> => {
-  const result = await prisma.booking.update({
+const updateIntoDB = async (
+  id: string,
+  data: Booking
+): Promise<{
+  booking: Booking;
+}> => {
+  // return result;
+
+  const user = await prisma.user.findUnique({
     where: {
-      id: id,
+      id: data.userId,
     },
-    data: booking,
   });
 
-  if (!result) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'booking not found');
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found');
   }
+
+  const result = await prisma.$transaction(async transactionClient => {
+    // create a booking
+    const booking = await transactionClient.booking.update({
+      where: {
+        id: id,
+      },
+      data,
+    });
+
+    await transactionClient.notification.create({
+      data: {
+        userId: user.id,
+        message: 'order confirmed successfully',
+        role: user.role,
+        read: false,
+      },
+    });
+
+    return {
+      booking,
+    };
+  });
+
+  // create notification
 
   return result;
 };
@@ -81,7 +112,6 @@ const insertIntoDB = async (
   data: Booking
 ): Promise<{
   booking: Booking;
-  notification: Notification;
 }> => {
   const user = await prisma.user.findUnique({
     where: {
@@ -99,7 +129,7 @@ const insertIntoDB = async (
       data,
     });
 
-    const notification = await transactionClient.notification.create({
+    await transactionClient.notification.create({
       data: {
         userId: user.id,
         message: 'You have a new booking',
@@ -110,7 +140,6 @@ const insertIntoDB = async (
 
     return {
       booking,
-      notification,
     };
   });
 

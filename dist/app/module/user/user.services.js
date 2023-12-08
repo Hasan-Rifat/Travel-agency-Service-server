@@ -16,6 +16,8 @@ exports.userServices = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const prisma_1 = require("../../../shared/prisma");
 const config_1 = __importDefault(require("../../../config"));
+const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
+const http_status_1 = __importDefault(require("http-status"));
 const getAllFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma_1.prisma.user.findMany();
     return result;
@@ -26,6 +28,9 @@ const getByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
             id: id,
         },
     });
+    if (!result) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
+    }
     return result;
 });
 const updateIntoDB = (id, user) => __awaiter(void 0, void 0, void 0, function* () {

@@ -71,6 +71,37 @@ const deleteFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    //  check user exist
+    const userExist = yield prisma_1.prisma.user.findFirst({
+        where: {
+            id: data.userId,
+        },
+    });
+    if (!userExist) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
+    }
+    // check user book or not
+    const bookExist = yield prisma_1.prisma.booking.findMany({
+        where: {
+            serviceId: data.serviceId,
+            userId: data.userId,
+        },
+    });
+    if (!bookExist) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'Booking not found');
+    }
+    // check user review or not in this service
+    const reviewExist = yield prisma_1.prisma.review.findMany({
+        where: {
+            serviceId: data.serviceId,
+            userId: data.userId,
+        },
+    });
+    // if added then don't add
+    if (reviewExist.length > 0) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'you already review submit');
+    }
+    // if not added then add
     const result = yield prisma_1.prisma.review.create({
         data,
         include: {

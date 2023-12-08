@@ -2,6 +2,8 @@ import bcrypt from 'bcryptjs';
 import { User } from '@prisma/client';
 import { prisma } from '../../../shared/prisma';
 import config from '../../../config';
+import ApiError from '../../../errors/ApiError';
+import httpStatus from 'http-status';
 
 const getAllFromDB = async (): Promise<User[]> => {
   const result = await prisma.user.findMany();
@@ -14,6 +16,11 @@ const getByIdFromDB = async (id: string): Promise<User | null> => {
       id: id,
     },
   });
+
+  if (!result) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
   return result;
 };
 

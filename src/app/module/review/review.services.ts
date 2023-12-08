@@ -70,6 +70,43 @@ const deleteFromDB = async (id: string): Promise<Review> => {
 };
 
 const insertIntoDB = async (data: Review): Promise<Review | null> => {
+  //  check user exist
+  const userExist = await prisma.user.findFirst({
+    where: {
+      id: data.userId,
+    },
+  });
+
+  if (!userExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  // check user book or not
+  const bookExist = await prisma.booking.findMany({
+    where: {
+      serviceId: data.serviceId,
+      userId: data.userId,
+    },
+  });
+
+  if (!bookExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Booking not found');
+  }
+
+  // check user review or not in this service
+  const reviewExist = await prisma.review.findMany({
+    where: {
+      serviceId: data.serviceId,
+      userId: data.userId,
+    },
+  });
+
+  // if added then don't add
+  if (reviewExist.length > 0) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'you already review submit');
+  }
+
+  // if not added then add
   const result = await prisma.review.create({
     data,
     include: {
